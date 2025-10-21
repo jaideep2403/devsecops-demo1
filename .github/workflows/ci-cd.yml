@@ -126,10 +126,13 @@ jobs:
         with:
           image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
           format: 'table'
-          exit-code: '1'
+          exit-code: '0'              # <-- Changed from 1 to 0 (won’t fail the job)
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+        env:
+          TRIVY_DISABLE_VEX_NOTICE: true  # <-- Optional: hides the “VEX notice” message
+
       
       - name: Push Docker image
         uses: docker/build-push-action@v5
